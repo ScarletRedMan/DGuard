@@ -1,7 +1,7 @@
 ﻿name: DGuard
 main: qpi\guard\DGuard
-version: 1.0
-author: qPi
+version: 1.0.0
+author: qPexLegendary
 api: [3.0.0, 4.0.0]
 load: STARTUP
 
