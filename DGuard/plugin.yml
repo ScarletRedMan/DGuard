@@ -1,0 +1,10 @@
+﻿name: DGuard
+main: qpi\guard\DGuard
+version: 1.0
+author: qPi
+api: [3.0.0, 4.0.0]
+load: STARTUP
+
+commands:
+ rg:
+  default: true
