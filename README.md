@@ -7,10 +7,10 @@
 
 Для знакомства с плагином присутствует специальный раздел в `/rg`, который знакомит вас с новой системой.
 ***
-![Главное меню, которое открывается при команде /rg](http://dragonestia.ru/docs/pics/01.jpg)
-![Управление регионом](http://dragonestia.ru/docs/pics/02.jpg)
-![Управление флагами](http://dragonestia.ru/docs/pics/03.jpg)
-![Информация о регионе](http://dragonestia.ru/docs/pics/04.jpg)
+![Главное меню, которое открывается при команде /rg](https://sun9-26.userapi.com/c855520/v855520587/1a64c2/sGUKIAPXlmA.jpg)
+![Управление регионом](https://sun9-45.userapi.com/c855520/v855520587/1a64cc/JNhWwAksCf8.jpg)
+![Управление флагами](https://sun9-37.userapi.com/c855520/v855520587/1a64d6/41fT6iGbPbg.jpg)
+![Информация о регионе](https://sun9-11.userapi.com/c855520/v855520587/1a64e0/EHSRge72q8Y.jpg)
 ***
 
 > Требования для запуска:
