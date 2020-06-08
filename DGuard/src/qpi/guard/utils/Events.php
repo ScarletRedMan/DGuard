@@ -76,7 +76,7 @@ class Events implements Listener{
                 $e->setCancelled(true);
             }else if($itemHand == 271){
                 $n = strtolower($n);
-                if(isset($this->wand[$n])){
+                if(isset(DGuard::getInstance()->wand[$n])){
                     if(DGuard::getInstance()->wand[$n]) {
                         DGuard::getInstance()->set_pos(false, $block->getX(), $block->getZ(), $p->getLevel()->getName(), $p);
                         DGuard::getInstance()->wand[$n] = false;

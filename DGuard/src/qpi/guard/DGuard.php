@@ -2,7 +2,6 @@
 
 namespace qpi\guard;
 
-use jojoe77777\FormAPI\FormAPI;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\plugin\PluginBase;
@@ -15,9 +14,6 @@ use qpi\guard\utils\Forms;
 use qpi\guard\utils\Methods;
 
 class DGuard extends PluginBase implements Listener{
-
-    /* @var $api FormAPI */
-    public $api;
 
     /* @var $areas Config */
     public $areas;
@@ -50,7 +46,6 @@ class DGuard extends PluginBase implements Listener{
 
         //Переменные
         $this->pos1 = $this->pos2 = $this->wand = $this->region = $this->tmp = [];
-        $this->api = $this->getServer()->getPluginManager()->getPlugin("FormAPI");
 
         //Регистрация флагов
         Flag::registerFlag('pvp', 'Разрешает PvP.', 'deny');
@@ -148,17 +143,29 @@ class DGuard extends PluginBase implements Listener{
         return true;
     }
 
-    public function set_pos(bool $fisrtFos, $x, $z, $level, Player $player){
+    public function set_pos(bool $firstPos, $x, $z, $level, Player $player){
         if(Methods::getInstance()->isPrivated($x, $z, $level)){
             $player->sendMessage("§l§c>§e Невозможно здесь установить точку, тк здесь находится регион.§r");
         }else{
-            if($fisrtFos){
+            if($firstPos){
+                if(isset($this->pos2[strtolower($player->getName())])){
+                    $temp = $this->pos2[strtolower($player->getName())];
+
+                    if($temp['x'] == (int) $x && $temp['z'] == (int) $z) return;
+                }
+
                 $player->sendMessage("§c§l>§f §3Первая точка§f была установлена. Нажмите еще раз для установки §3второй точки§f.§r");
                 $this->pos1[strtolower($player->getName())] = [
                     'x' => (int) $x,
                     'z' => (int) $z,
                 ];
             }else{
+                if(isset($this->pos1[strtolower($player->getName())])){
+                    $temp = $this->pos1[strtolower($player->getName())];
+
+                    if($temp['x'] == (int) $x && $temp['z'] == (int) $z) return;
+                }
+
                 $player->sendMessage("§c§l>§f §3Вторая точка§f была установлена. Теперь можно создать регион.§r");
                 $this->pos2[strtolower($player->getName())] = [
                     'x' => (int) $x,

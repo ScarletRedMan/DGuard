@@ -4,6 +4,8 @@
 namespace qpi\guard\utils;
 
 
+use jojoe77777\FormAPI\CustomForm;
+use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\item\Item;
 use pocketmine\Player;
 use qpi\guard\DGuard;
@@ -22,7 +24,7 @@ class Forms
 
 
     public function f_menu(Player $player){
-        $form = DGuard::getInstance()->api->createSimpleForm(function (Player $player, $data){
+        $form = new SimpleForm(function (Player $player, $data){
             if($data !== null){
                 switch($data){
                     case 0:
@@ -50,11 +52,12 @@ class Forms
         $form->addButton('Мои регионы', 0, 'textures/items/book_normal');
         $form->addButton('Информация о регионе', 0, 'textures/items/map_empty');
         $form->addButton('Туториал', 0, 'textures/items/book_portfolio');
-        $form->sendToPlayer($player);
+
+        $player->sendForm($form);
     }
 
     public function f_guide(Player $player){
-        $form = DGuard::getInstance()->api->createSimpleForm(function (Player $player, $data){
+        $form = new SimpleForm(function (Player $player, $data){
             if($data !== null){
                 if($data == 0) $this->f_menu($player);
             }
@@ -78,7 +81,8 @@ class Forms
         $form->setTitle('Туториал');
         $form->addButton('Назад');
         $form->addButton('Закрыть');
-        $form->sendToPlayer($player);
+
+        $player->sendForm($form);
     }
 
     public function f_regions_info(Player $player, $region){
@@ -86,7 +90,7 @@ class Forms
         if($region != "") {
             $info = Methods::getInstance()->getRegionInfo($region);
 
-            $form = DGuard::getInstance()->api->createSimpleForm(function (Player $player, $data) {});
+            $form = new SimpleForm(function (Player $player, $data) {});
 
             $form->setTitle('Регионы');
             $form->setContent(
@@ -98,14 +102,15 @@ class Forms
                 "Площадь: §b".Methods::getInstance()->getSpace($info['minX'], $info['minZ'], $info['maxX'], $info['maxZ'])." Блоков§f."
             );
             $form->addButton('Выход');
-            $form->sendToPlayer($player);
+
+            $player->sendForm($form);
         }else $player->sendMessage("§l§c>§f В данной точке нет региона.§r");
     }
 
 
     public function f_regions_list(Player $player){
         if(Methods::getInstance()->getRegions($player->getName()) > 0){
-            $form = DGuard::getInstance()->api->createSimpleForm(function (Player $player, $data) {
+            $form = new SimpleForm(function (Player $player, $data) {
                 if($data !== null){
                     $regions = Methods::getInstance()->getRegions($player->getName());
                     if($data != count($regions)) {
@@ -127,16 +132,17 @@ class Forms
                 $form->addButton($body['name'], 0, 'textures/items/campfire');
             }
         }else{
-            $form = DGuard::getInstance()->api->createSimpleForm(function (Player $player, $data) {});
+            $form = new SimpleForm(function (Player $player, $data) {});
             $form->setContent("У вас нет еще регионов.");
         }
         $form->setTitle('Ваши регионы');
         $form->addButton('Назад');
-        $form->sendToPlayer($player);
+
+        $player->sendForm($form);
     }
 
     public function f_private(Player $player){
-        $form = DGuard::getInstance()->api->createSimpleForm(function (Player $player, $data) {
+        $form = new SimpleForm(function (Player $player, $data) {
             if($data !== null){
                 switch($data){
                     case 0:
@@ -171,12 +177,13 @@ class Forms
         $form->addButton("Создать регион", 0, 'textures/items/campfire');
         $form->addButton("Получить инструменты для выделения", 0, 'textures/items/wood_axe');
         $form->addButton("Назад");
-        $form->sendToPlayer($player);
+
+        $player->sendForm($form);
     }
 
 
     public function f_create_region(Player $player){
-        $form = DGuard::getInstance()->api->createCustomForm(function (Player $player, $data){
+        $form = new CustomForm(function (Player $player, $data){
             if(isset($data[1])){
                 if(strlen($data[1]) > 3 and strlen($data[1]) < 15){
                     $pos1 = DGuard::getInstance()->pos1[strtolower($player->getName())];
@@ -199,7 +206,8 @@ class Forms
         $form->setTitle("Создание региона");
         $form->addLabel("Укажите желаемое название региона. Использовать можно только латинские буквы и цыфры. Не использовать пробелы!");
         $form->addInput("Название региона", "Название региона. Например: ".$player->getName());
-        $form->sendToPlayer($player);
+
+        $player->sendForm($form);
     }
 
     public function f_control_list(Player $player){
@@ -209,7 +217,7 @@ class Forms
         }
 
         if(count($regions) > 0){
-            $form = DGuard::getInstance()->api->createSimpleForm(function (Player $player, $data) {
+            $form = new SimpleForm(function (Player $player, $data) {
                 if($data !== null) {
                     $regions = [];
                     foreach (Methods::getInstance()->getRegions($player->getName()) as $name => $body) {
@@ -229,19 +237,20 @@ class Forms
                 $form->addButton($name, 0, 'textures/items/campfire');
             }
         }else{
-            $form = DGuard::getInstance()->api->createSimpleForm(function (Player $player, $data) {
+            $form = new SimpleForm(function (Player $player, $data) {
                 if($data !== null) $this->f_menu($player);
             });
             $form->setContent("У вас еще нет регионов.");
         }
         $form->setTitle("Управление регионами");
         $form->addButton("Назад");
-        $form->sendToPlayer($player);
+
+        $player->sendForm($form);
     }
 
     public function f_edit_menu(Player $player, $region){
         DGuard::getInstance()->region[strtolower($player->getName())] = $region;
-        $form = DGuard::getInstance()->api->createSimpleForm(function (Player $player, $data) {
+        $form = new SimpleForm(function (Player $player, $data) {
             if($data !== null){
                 $region = DGuard::getInstance()->region[strtolower($player->getName())];
 
@@ -273,13 +282,14 @@ class Forms
         $form->addButton("Удалить регион", 0, 'textures/items/blaze_powder');
 
         $form->addButton("Назад");
-        $form->sendToPlayer($player);
+
+        $player->sendForm($form);
     }
 
 
     public function f_edit_flag(Player $player, $region){
         DGuard::getInstance()->region[strtolower($player->getName())] = $region;
-        $form = DGuard::getInstance()->api->createCustomForm(function (Player $player, $data){
+        $form = new CustomForm(function (Player $player, $data){
             if(isset($data[1])){
                 $region = DGuard::getInstance()->region[strtolower($player->getName())];
 
@@ -293,16 +303,17 @@ class Forms
         });
         $form->setTitle("Управление регионом {$region}");
         $form->addLabel("Установите нужные параметры установки флагов для региона §b{$region}§f.");
-        $form->addToggle("PvP", (Methods::getInstance()->getFlag($region, 'pvp') == 'allow')? true : false);
-        $form->addToggle("Использование сундуков", (Methods::getInstance()->getFlag($region, 'chest') == 'allow')? true : false);
-        $form->addToggle("Использование печей", (Methods::getInstance()->getFlag($region, 'furnace') == 'allow')? true : false);
-        $form->addToggle("PvE", (Methods::getInstance()->getFlag($region, 'pve') == 'allow')? true : false);
-        $form->sendToPlayer($player);
+        $form->addToggle("PvP", Methods::getInstance()->getFlag($region, 'pvp') == 'allow');
+        $form->addToggle("Использование сундуков", Methods::getInstance()->getFlag($region, 'chest') == 'allow');
+        $form->addToggle("Использование печей", Methods::getInstance()->getFlag($region, 'furnace') == 'allow');
+        $form->addToggle("PvE", Methods::getInstance()->getFlag($region, 'pve') == 'allow');
+
+        $player->sendForm($form);
     }
 
     public function f_remove(Player $player, $region){
         DGuard::getInstance()->region[strtolower($player->getName())] = $region;
-        $form = DGuard::getInstance()->api->createSimpleForm(function (Player $player, $data) {
+        $form = new SimpleForm(function (Player $player, $data) {
             if($data !== null){
                 $region = DGuard::getInstance()->region[strtolower($player->getName())];
                 switch($data){
@@ -321,7 +332,8 @@ class Forms
         $form->setContent("Подтвердите что вы точно хотите удалить регион §b{$region}§f.");
         $form->addButton("Удалить регион", 0, 'textures/blocks/barrier');
         $form->addButton("Назад");
-        $form->sendToPlayer($player);
+
+        $player->sendForm($form);
     }
 
     public function f_add_user(Player $player, $region){
@@ -335,7 +347,7 @@ class Forms
         ksort($tmp);
         DGuard::getInstance()->tmp[strtolower($player->getName())] = $tmp;
 
-        $form = DGuard::getInstance()->api->createCustomForm(function (Player $player, $data){
+        $form = new CustomForm(function (Player $player, $data){
             if(isset($data[1])){
                 $tmp = DGuard::getInstance()->tmp[strtolower($player->getName())];
                 if(count($tmp) != 0) {
@@ -351,7 +363,8 @@ class Forms
         $form->setTitle("Добавить игрока");
         $form->addLabel("Выберите игрока, которого хотите добавить в ваш регион. После добавления игроку устанавливается роль §bГость§f.");
         $form->addDropdown("Игрок", $tmp);
-        $form->sendToPlayer($player);
+
+        $player->sendForm($form);
     }
 
     public function f_edit_players(Player $player, $region){
@@ -367,7 +380,7 @@ class Forms
         }
         DGuard::getInstance()->tmp[strtolower($player->getName())] = $tmp;
 
-        $form = DGuard::getInstance()->api->createSimpleForm(function (Player $player, $data) {
+        $form = new SimpleForm(function (Player $player, $data) {
             if($data !== null){
                 $region = DGuard::getInstance()->region[strtolower($player->getName())];
                 $tmp = DGuard::getInstance()->tmp[strtolower($player->getName())];
@@ -394,14 +407,15 @@ class Forms
             $form->addButton($p, 0, 'textures/blocks/'.((Methods::getInstance()->getRole($p, $region) == 2)? 'concrete_lime' : 'concrete_light_blue'));
         }
         $form->addButton("Назад");
-        $form->sendToPlayer($player);
+
+        $player->sendForm($form);
     }
 
     public function f_edit_role(Player $player, $p, $region){
         DGuard::getInstance()->region[strtolower($player->getName())] = $region;
 
 
-        $form = DGuard::getInstance()->api->createCustomForm(function (Player $player, $data){
+        $form = new CustomForm(function (Player $player, $data){
             if(isset($data[1])){
                 $region = DGuard::getInstance()->region[strtolower($player->getName())];
                 $p = DGuard::getInstance()->tmp[strtolower($player->getName())];
@@ -434,6 +448,7 @@ class Forms
             "§bГости§f могут только взаимодействовать с дверьми, печками, вестаками и сундуками."
         );
         $form->addDropdown("Действие", ['Выгнать из региона', 'Назначить Гостем', 'Назначить Жителем', 'Передать регион']);
-        $form->sendToPlayer($player);
+
+        $player->sendForm($form);
     }
 }
