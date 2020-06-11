@@ -146,7 +146,7 @@ class Forms
             if($data !== null){
                 switch($data){
                     case 0:
-                        if(isset($this->pos1[strtolower($player->getName())], $this->pos2[strtolower($player->getName())])){
+                        if(isset(DGuard::getInstance()->pos1[strtolower($player->getName())], DGuard::getInstance()->pos2[strtolower($player->getName())])){
                             $this->f_create_region($player);
                         }else $player->sendMessage("§l§c>§e Для начала отметьте крайние точки региона.§r");
                         break;

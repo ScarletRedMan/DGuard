@@ -154,14 +154,28 @@ class DGuard extends PluginBase implements Listener{
                     if($temp['x'] == (int) $x && $temp['z'] == (int) $z) return;
                 }
 
+                if(isset($this->pos1[strtolower($player->getName())])){
+                    $temp = $this->pos1[strtolower($player->getName())];
+
+                    if($temp['x'] == (int) $x && $temp['z'] == (int) $z) return;
+                }
+
                 $player->sendMessage("§c§l>§f §3Первая точка§f была установлена. Нажмите еще раз для установки §3второй точки§f.§r");
                 $this->pos1[strtolower($player->getName())] = [
                     'x' => (int) $x,
                     'z' => (int) $z,
                 ];
+
+                $this->wand[strtolower($player->getName())] = false;
             }else{
                 if(isset($this->pos1[strtolower($player->getName())])){
                     $temp = $this->pos1[strtolower($player->getName())];
+
+                    if($temp['x'] == (int) $x && $temp['z'] == (int) $z) return;
+                }
+
+                if(isset($this->pos2[strtolower($player->getName())])){
+                    $temp = $this->pos2[strtolower($player->getName())];
 
                     if($temp['x'] == (int) $x && $temp['z'] == (int) $z) return;
                 }
@@ -171,6 +185,8 @@ class DGuard extends PluginBase implements Listener{
                     'x' => (int) $x,
                     'z' => (int) $z,
                 ];
+
+                $this->wand[strtolower($player->getName())] = true;
             }
         }
     }

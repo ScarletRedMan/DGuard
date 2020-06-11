@@ -79,14 +79,12 @@ class Events implements Listener{
                 if(isset(DGuard::getInstance()->wand[$n])){
                     if(DGuard::getInstance()->wand[$n]) {
                         DGuard::getInstance()->set_pos(false, $block->getX(), $block->getZ(), $p->getLevel()->getName(), $p);
-                        DGuard::getInstance()->wand[$n] = false;
+
                     }else{
                         DGuard::getInstance()->set_pos(true, $block->getX(), $block->getZ(), $p->getLevel()->getName(), $p);
-                        DGuard::getInstance()->wand[$n] = true;
                     }
                 }else{
                     DGuard::getInstance()->set_pos(true, $block->getX(), $block->getZ(), $p->getLevel()->getName(), $p);
-                    DGuard::getInstance()->wand[$n] = true;
                 }
                 $e->setCancelled(true);
 
