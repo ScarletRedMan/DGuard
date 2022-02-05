@@ -7,7 +7,9 @@ namespace qpi\guard\utils;
 use jojoe77777\FormAPI\CustomForm;
 use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\item\VanillaItems;
+use pocketmine\player\Player;
+use pocketmine\Server;
 use qpi\guard\DGuard;
 
 class Forms
@@ -37,7 +39,7 @@ class Forms
                         $this->f_regions_list($player);
                         break;
                     case 3:
-                        $this->f_regions_info($player, Methods::getInstance()->getRegion($player->getX(), $player->getZ(), $player->getLevel()->getName()));
+                        $this->f_regions_info($player, Methods::getInstance()->getRegion($player->getPosition()->getX(), $player->getPosition()->getZ(), $player->getWorld()->getDisplayName()));
                         break;
                     case 4:
                         $this->f_guide($player);
@@ -151,7 +153,7 @@ class Forms
                         }else $player->sendMessage("§l§c>§e Для начала отметьте крайние точки региона.§r");
                         break;
                     case 1:
-                        $item = Item::get(271, 0, 1)->setCustomName("§r§r§r§l§dМаркер выделения точек§r");
+                        $item = VanillaItems::WOODEN_AXE()->setCustomName("§r§r§r§l§dМаркер выделения точек§r");
                         $inv = $player->getInventory();
 
                         $inv->addItem($item);
@@ -190,7 +192,7 @@ class Forms
                     $pos2 = DGuard::getInstance()->pos2[strtolower($player->getName())];
                     if(isset($this->wand[strtolower($player->getName())])) unset(DGuard::getInstance()->wand[strtolower($player->getName())]);
 
-                    $result = Methods::getInstance()->createRegion($data[1], $player->getName(), $pos1['x'], $pos1['z'], $pos2['x'], $pos2['z'], $player->getLevel()->getName(), $player->isOp());
+                    $result = Methods::getInstance()->createRegion($data[1], $player->getName(), $pos1['x'], $pos1['z'], $pos2['x'], $pos2['z'], $player->getWorld()->getDisplayName(), Server::getInstance()->isOp($player->getName()));
 
                     if($result == 0) $player->sendMessage("§l§c> §fРегион был успешно создан!§r");
                     else if($result == 1) $player->sendMessage("§l§c> §eРегион с таким названием уже существует.§r");
