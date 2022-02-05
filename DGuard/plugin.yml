@@ -1,0 +1,14 @@
+﻿name: DGuard
+main: qpi\guard\DGuard
+version: 1.0.0
+author: qPexLegendary
+api: 4.0.0
+load: STARTUP
+
+commands:
+  rg:
+    description: 'Регионы'
+    permission: rg.use
+permissions:
+  rg.use:
+    default: TRUE
