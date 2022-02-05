@@ -6,7 +6,7 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\Config;
 use qpi\guard\elements\Flag;
 use qpi\guard\utils\Events;
@@ -27,7 +27,8 @@ class DGuard extends PluginBase implements Listener{
 
     const VERSION = 1;
 
-    public function onEnable(){
+    public function onEnable() : void
+    {
 
         self::$instance = $this;
         new Methods();
@@ -67,11 +68,11 @@ class DGuard extends PluginBase implements Listener{
                     switch(strtolower($args[0])){
 
                         case 'pos1':
-                            $this->set_pos(true, $s->getX(), $s->getZ(), $s->getLevel()->getName(), $s);
+                            $this->set_pos(true, $s->getPosition()->getX(), $s->getPosition()->getZ(), $s->getWorld()->getDisplayName(), $s);
                             break;
 
                         case 'pos2':
-                            $this->set_pos(false, $s->getX(), $s->getZ(), $s->getLevel()->getName(), $s);
+                            $this->set_pos(false, $s->getPosition()->getX(), $s->getPosition()->getZ(), $s->getWorld()->getDisplayName(), $s);
                             break;
 
                         default:
