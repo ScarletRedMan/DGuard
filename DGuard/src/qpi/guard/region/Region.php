@@ -15,6 +15,8 @@ class Region implements JsonSerializable {
     private array $flags = [];
     private Area $area;
 
+    public bool $removed = false;
+
     private function __construct(int $id) {
         $this->id = $id;
     }

@@ -10,6 +10,14 @@ class RegionsList {
 
     private array $data = [];
 
+    public function __construct(private RegionManager $regionManager) {
+
+    }
+
+    public function getRegionManager(): RegionManager {
+        return $this->regionManager;
+    }
+
     public function initWorld(World $world){
         $worldName = strtolower($world->getFolderName());
         if(!isset($this->data[$worldName])) $this->data[$worldName] = [];
