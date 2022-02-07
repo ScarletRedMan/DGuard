@@ -3,6 +3,7 @@
 namespace qpi\guard\utils;
 
 use JsonSerializable;
+use pocketmine\math\Vector3;
 
 class Point implements JsonSerializable {
 
@@ -28,6 +29,10 @@ class Point implements JsonSerializable {
     public static function fromJson(string|array $json): Point {
         $data = is_array($json)? $json : json_decode($json, true);
         return new Point($data['x'], $data['z']);
+    }
+
+    public static function fromVector(Vector3 $pos): Point {
+        return new Point((int) ($pos->getX() + 0.5), (int) ($pos->getZ() + 0.5));
     }
 
     public static function min(Point $p1, Point $p2): Point {
