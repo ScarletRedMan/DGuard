@@ -3,6 +3,7 @@
 namespace qpi\guard\region;
 
 use JsonSerializable;
+use qpi\guard\utils\Area;
 
 class Region implements JsonSerializable {
 
@@ -12,6 +13,7 @@ class Region implements JsonSerializable {
     private string $owner;
     private array $members;
     private array $flags = [];
+    private Area $area;
 
     private function __construct(int $id) {
         $this->id = $id;
@@ -37,7 +39,11 @@ class Region implements JsonSerializable {
         return $this->owner;
     }
 
-    public function jsonSerialize() {
+    public function getArea(): Area {
+        return $this->area;
+    }
+
+    public function jsonSerialize(): array {
         return [
             'id' => $this->id,
             'world' => $this->world,
@@ -45,11 +51,12 @@ class Region implements JsonSerializable {
             'owner' => $this->owner,
             'members' => $this->members,
             'flags' => $this->flags,
+            'area' => $this->area->jsonSerialize(),
         ];
     }
 
-    public static function fromJson(string $json): Region {
-        $data = json_decode($json, true);
+    public static function fromJson(string|array $json): Region {
+        $data = is_array($json)? $json : json_decode($json, true);
         $region = new Region($data['id']);
 
         $region->world = $data['world'];
@@ -57,6 +64,7 @@ class Region implements JsonSerializable {
         $region->owner = $data['owner'];
         $region->members = $data['members'];
         $region->flags = $data['flags'];
+        $region->area = Area::fromJson($data['area']);
 
         return $region;
     }

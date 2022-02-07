@@ -53,8 +53,8 @@ class Area implements JsonSerializable {
         ];
     }
 
-    public static function fromJson(string $json): Area {
-        $data = json_decode($json, true);
+    public static function fromJson(string|array $json): Area {
+        $data = is_array($json)? $json : json_decode($json, true);
         return new Area(Point::fromJson($data['min']), Point::fromJson($data['max']));
     }
 }

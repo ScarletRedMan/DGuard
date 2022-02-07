@@ -25,8 +25,8 @@ class Point implements JsonSerializable {
         ];
     }
 
-    public static function fromJson(string $json): Point {
-        $data = json_decode($json, true);
+    public static function fromJson(string|array $json): Point {
+        $data = is_array($json)? $json : json_decode($json, true);
         return new Point($data['x'], $data['z']);
     }
 
