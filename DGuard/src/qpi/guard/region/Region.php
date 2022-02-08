@@ -3,6 +3,7 @@
 namespace qpi\guard\region;
 
 use JsonSerializable;
+use qpi\guard\region\flag\Flag;
 use qpi\guard\utils\Area;
 
 class Region implements JsonSerializable {
@@ -43,6 +44,14 @@ class Region implements JsonSerializable {
 
     public function getArea(): Area {
         return $this->area;
+    }
+
+    public function getFlag(Flag $flag): bool {
+        return $this->flags[$flag->getId()] ?? $flag->getDefaultValue();
+    }
+
+    public function setFlag(Flag $flag, bool $value): void {
+        $this->flags[$flag->getId()] = $value;
     }
 
     public function jsonSerialize(): array {
