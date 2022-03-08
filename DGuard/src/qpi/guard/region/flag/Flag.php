@@ -2,6 +2,7 @@
 
 namespace qpi\guard\region\flag;
 
+use pocketmine\player\Player;
 use qpi\guard\region\Region;
 use qpi\guard\region\Roles;
 
@@ -33,7 +34,11 @@ class Flag {
         return false;
     }
 
-    public function checkForPlayer(string $playerName, bool $flagValue, Region $region): bool {
+    public function check(Player $player, Region $region): bool {
+        return $this->checkForPlayer($player, $region->getFlag($this), $region);
+    }
+
+    protected function checkForPlayer(string $playerName, bool $flagValue, Region $region): bool {
         return $flagValue || $region->getRole($playerName) > Roles::NOBODY;
     }
 }

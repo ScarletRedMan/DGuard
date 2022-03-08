@@ -11,7 +11,7 @@ class PvpFlag extends Flag {
         parent::__construct(DefaultFlagIds::PVP, "PvP режим", "Разрешает атаковать других игроков в регионе.");
     }
 
-    public function checkForPlayer(string $playerName, bool $flagValue, Region $region): bool {
+    protected function checkForPlayer(string $playerName, bool $flagValue, Region $region): bool {
         return $flagValue;
     }
 }
