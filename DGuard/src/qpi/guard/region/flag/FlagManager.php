@@ -4,6 +4,11 @@ namespace qpi\guard\region\flag;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
+use qpi\guard\region\flag\defaults\BuildFlag;
+use qpi\guard\region\flag\defaults\ChestFlag;
+use qpi\guard\region\flag\defaults\DoorFlag;
+use qpi\guard\region\flag\defaults\FurnaceFlag;
+use qpi\guard\region\flag\defaults\PvpFlag;
 
 class FlagManager {
     use SingletonTrait;
@@ -20,7 +25,11 @@ class FlagManager {
     }
 
     private function registerDefaultFlags(): void {
-        //...
+        $this->registerFlag(new BuildFlag());
+        $this->registerFlag(new ChestFlag());
+        $this->registerFlag(new DoorFlag());
+        $this->registerFlag(new FurnaceFlag());
+        $this->registerFlag(new PvpFlag());
     }
 
     public function registerFlag(Flag $flag): void {
