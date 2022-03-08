@@ -7,15 +7,14 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
 use pocketmine\world\World;
 use qpi\guard\event\listener\RegionManagementListener;
-use qpi\guard\player\PlayerIdentifier;
 use qpi\guard\utils\Area;
 use qpi\guard\utils\Point;
 
 class RegionManager {
     use SingletonTrait;
 
-    private const REGIONS_DIR = "/regions/";
-    private const SAVED_FREE_ID_PATH = "/.free_id";
+    private const REGIONS_DIR = "regions/";
+    private const SAVED_FREE_ID_PATH = ".free_id";
 
     private PluginBase $plugin;
     private string $path;
@@ -73,12 +72,12 @@ class RegionManager {
         //TODO: Удаление региона
     }
 
-    public function createNewRegion(PlayerIdentifier $playerId, string $world, Area $area, string $name): Region {
+    public function createNewRegion(String $playerName, string $world, Area $area, string $name): Region {
         $regionData = [
             'id' => $this->useFreeId(),
             'world' => $world,
             'name' => $name,
-            'owner' => $playerId->getId(),
+            'owner' => $playerName,
             'members' => [],
             'flags' => [],
             'area' => $area->jsonSerialize(),

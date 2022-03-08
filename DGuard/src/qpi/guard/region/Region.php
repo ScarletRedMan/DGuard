@@ -54,6 +54,11 @@ class Region implements JsonSerializable {
         $this->flags[$flag->getId()] = $value;
     }
 
+    public function getRole(string $playerName): int {
+        if($this->owner == $playerName) return Roles::OWNER;
+        return $this->members[$playerName] ?? Roles::NOBODY;
+    }
+
     public function jsonSerialize(): array {
         return [
             'id' => $this->id,

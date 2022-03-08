@@ -2,7 +2,6 @@
 
 namespace qpi\guard\region\flag;
 
-use qpi\guard\player\PlayerIdentifier;
 use qpi\guard\region\Region;
 
 abstract class Flag {
@@ -33,5 +32,5 @@ abstract class Flag {
         return true;
     }
 
-    public abstract function checkForPlayer(PlayerIdentifier $playerId, bool $flagValue, Region $region): bool;
+    public abstract function checkForPlayer(string $playerName, bool $flagValue, Region $region): bool;
 }
