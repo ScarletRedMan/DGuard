@@ -3,8 +3,9 @@
 namespace qpi\guard\region\flag;
 
 use qpi\guard\region\Region;
+use qpi\guard\region\Roles;
 
-abstract class Flag {
+class Flag {
 
     private string $id;
     private string $name;
@@ -29,8 +30,10 @@ abstract class Flag {
     }
 
     public function getDefaultValue(): bool {
-        return true;
+        return false;
     }
 
-    public abstract function checkForPlayer(string $playerName, bool $flagValue, Region $region): bool;
+    public function checkForPlayer(string $playerName, bool $flagValue, Region $region): bool {
+        return $flagValue || $region->getRole($playerName) > Roles::NOBODY;
+    }
 }
