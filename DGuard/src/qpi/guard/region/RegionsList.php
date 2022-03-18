@@ -3,6 +3,7 @@
 namespace qpi\guard\region;
 
 use pocketmine\math\Vector3;
+use pocketmine\player\Player;
 use pocketmine\world\World;
 use qpi\guard\utils\Point;
 
@@ -51,5 +52,19 @@ class RegionsList {
             if($region->getArea()->isInside($point)) return $region;
         }
         return null;
+    }
+
+    public function getRegions(Player $player): array {
+        $list = [];
+
+        foreach ($this->data as $regions) {
+            foreach ($regions as $region) {
+                if ($region->getOwner() !== $player->getName()) continue;
+
+                $list[] = $region;
+            }
+        }
+
+        return $list;
     }
 }

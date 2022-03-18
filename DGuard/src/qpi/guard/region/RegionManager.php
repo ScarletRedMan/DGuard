@@ -3,6 +3,7 @@
 namespace qpi\guard\region;
 
 use pocketmine\math\Vector3;
+use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
 use pocketmine\world\World;
@@ -96,5 +97,9 @@ class RegionManager {
 
     public function findRegion(World|string $world, Vector3|Point $pos): ?Region {
         return $this->regions->findRegion($world, $pos);
+    }
+
+    public function getRegions(Player $player): array {
+        return $this->regions->getRegions($player);
     }
 }
