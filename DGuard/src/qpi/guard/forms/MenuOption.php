@@ -2,6 +2,7 @@
 
 namespace qpi\guard\forms;
 
+use form\SimpleForm;
 use pocketmine\player\Player;
 
 abstract class MenuOption {
@@ -26,5 +27,5 @@ abstract class MenuOption {
         return true;
     }
 
-    public abstract function click(Player $player): void;
+    public abstract function click(Player $player, ?SimpleForm $prev = null): void;
 }
