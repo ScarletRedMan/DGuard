@@ -4,6 +4,7 @@ namespace qpi\guard\forms;
 
 use form\SimpleForm;
 use pocketmine\player\Player;
+use qpi\guard\region\Region;
 
 abstract class MenuOption {
 
@@ -34,9 +35,10 @@ abstract class MenuOption {
     /**
      * Проверка на то, что может ли игрок открыть дануую форму.
      * @param Player $player Школьник
+     * @param Region $region Регион
      * @return bool Будет ли показан пункт в меню плагина
      */
-    public function canClick(Player $player): bool {
+    public function canClick(Player $player, Region $region): bool {
         return true;
     }
 
