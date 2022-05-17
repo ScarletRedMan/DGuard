@@ -11,6 +11,9 @@ class RegionsList {
 
     private array $data = [];
 
+    /** @var Region[] */
+    private array $cache = [];
+
     public function __construct(private RegionManager $regionManager) {
 
     }
@@ -34,6 +37,10 @@ class RegionsList {
         foreach ($this->data as $worldName => $regions){
             unset($this->data[$worldName][$region->getId()]);
         }
+
+        foreach ($this->cache as $key => $value) {
+            if ($value->getId() === $region->getId()) unset($this->cache[$key]);
+        }
     }
 
     public function __invoke(int $regionId): Region {
@@ -52,6 +59,25 @@ class RegionsList {
             if($region->getArea()->isInside($point)) return $region;
         }
         return null;
+    }
+
+    public function findAndCacheRegion(Player $player, Vector3 $pos): ?Region {
+        $point = Point::fromVector($pos);
+
+        if (isset($this->cache[$player->getId()])) {
+            $region = $this->cache[$player->getId()];
+            if ($region->getArea()->isInside($point)) return $region;
+
+            unset($this->cache[$player->getId()]);
+        }
+
+        $region = $this->findRegion($player->getWorld(), $pos);
+        if ($region !== null) $this->cache[$player->getId()] = $region;
+
+        return $region;
+    }
+    public function removeCache(Player $player): void {
+        unset($this->cache[$player->getId()]);
     }
 
     public function getRegions(Player $player): array {

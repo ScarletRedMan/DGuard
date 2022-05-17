@@ -108,6 +108,10 @@ class RegionManager {
         return $this->regions->findRegion($world, $pos);
     }
 
+    public function findByPlayer(Player $player, ?Vector3 $pos = null): ?Region {
+        return $this->regions->findAndCacheRegion($player, $pos === null? $player->getPosition() : $pos);
+    }
+
     public function getRegions(Player $player): array {
         return $this->regions->getRegions($player);
     }
