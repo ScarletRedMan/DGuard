@@ -60,17 +60,26 @@ class RegionManager {
     }
 
     private function loadRegions(): void {
-        //TODO: Загрузка регионов
+        $files = scandir($this->path . self::REGIONS_DIR);
+        foreach ($files as $file) {
+            if (!is_file($file)) continue;
+
+            $region = Region::fromJson(file_get_contents($file));
+            $this->regions->add($region);
+        }
     }
 
     public function saveRegion(Region $region): void {
-        //TODO: Сохранение региона
+        file_put_contents(
+            $this->path . self::REGIONS_DIR . $region->getId() . ".json",
+            json_encode($region)
+        );
     }
 
-    public function deleteRegion(Region $region): void {
+    public function removeRegion(Region $region): void {
         $region->removed = true;
-
-        //TODO: Удаление региона
+        $this->regions->remove($region);
+        unlink($this->path . self::REGIONS_DIR . $region->getId() . ".json");
     }
 
     public function createNewRegion(String $playerName, string $world, Area $area, string $name): Region {
