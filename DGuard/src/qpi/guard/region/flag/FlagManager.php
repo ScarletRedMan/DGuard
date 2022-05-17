@@ -32,6 +32,11 @@ class FlagManager {
         $this->registerFlag(new PvpFlag());
     }
 
+    /**
+     * Регистрация флага
+     * @param Flag $flag Объект класса
+     * @return void
+     */
     public function registerFlag(Flag $flag): void {
         $flagId = $flag->getId();
         if(isset(self::$flags[$flagId])){
@@ -41,10 +46,19 @@ class FlagManager {
         $this->plugin->getLogger()->info("Флаг '${flagId}' был успешно зарегистрирован!");
     }
 
+    /**
+     * Получение списка всех флагов
+     * @return Flag[] Список флагов
+     */
     public function getAllFlags(): array {
         return array_values(self::$flags);
     }
 
+    /**
+     * Получение определенного флага по его ключу. Все id стандартных флагов лежат в `qpi\dguard\region\flag\defaults\DefaultFlagIds`
+     * @param string $flagId id флага
+     * @return Flag Флаг
+     */
     public static function of(string $flagId): Flag {
         if(isset(self::$flags[$flagId])) return self::$flags[$flagId];
         throw new \InvalidArgumentException("Флага '${flagId}' не существует");

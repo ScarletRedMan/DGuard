@@ -7,6 +7,10 @@ use pocketmine\player\Player;
 use pocketmine\world\World;
 use qpi\guard\utils\Point;
 
+/**
+ * Это специальный скрытый слой, доступ к которому есть только у менеджера регионов.
+ * Сделан специально для того чтобы какой-нибудь фаршмачник не угандошил случайно регионы.
+ */
 class RegionsList {
 
     private array $data = [];

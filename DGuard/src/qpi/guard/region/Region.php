@@ -22,38 +22,79 @@ class Region implements JsonSerializable {
         $this->id = $id;
     }
 
+    /**
+     * Получение id региона
+     * @return int id региона
+     */
     public function getId(): int {
         return $this->id;
     }
 
+    /**
+     * Получение имени мира, регион в котором расположен
+     * @return string Имя мира
+     */
     public function getWorldName(): string {
         return $this->world;
     }
 
+    /**
+     * Плучение названия региона
+     * @return string Название региона
+     */
     public function getName(): string {
         return $this->name;
     }
 
+    /**
+     * Установка нового названия для региона
+     * @param string $name Новое название региона
+     * @return void
+     */
     public function setName(string $name): void {
         $this->name = $name;
     }
 
+    /**
+     * Получение НикНейма игрока владельца региона
+     * @return string НикНейм владельца
+     */
     public function getOwner(): string {
         return $this->owner;
     }
 
+    /**
+     * Получение информации о территории региона
+     * @return Area
+     */
     public function getArea(): Area {
         return $this->area;
     }
 
+    /**
+     * Получение статуса активности флага в данном регионе
+     * @param Flag $flag Флаг
+     * @return bool Значение
+     */
     public function getFlag(Flag $flag): bool {
         return $this->flags[$flag->getId()] ?? $flag->getDefaultValue();
     }
 
+    /**
+     * Установка нового значения для флага региона
+     * @param Flag $flag Флаг
+     * @param bool $value Новое значение
+     * @return void
+     */
     public function setFlag(Flag $flag, bool $value): void {
         $this->flags[$flag->getId()] = $value;
     }
 
+    /**
+     * Получение роли игрока по его НикНейму в данном регионе
+     * @param string $playerName НикНейм игрока
+     * @return int Роль игрока для данного региона. Список ролей можно увидеть в классе `qpi\dguard\Roles`
+     */
     public function getRole(string $playerName): int {
         if($this->owner == $playerName) return Roles::OWNER;
         return $this->members[$playerName] ?? Roles::NOBODY;

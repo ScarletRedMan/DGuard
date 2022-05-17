@@ -18,27 +18,56 @@ class Flag {
         $this->description = $description;
     }
 
+    /**
+     * Получение id флага
+     * @return string id флага
+     */
     public function getId(): string {
         return $this->id;
     }
 
+    /**
+     * Получение названия флага
+     * @return string Название флага
+     */
     public function getName(): string {
         return $this->name;
     }
 
+    /**
+     * Получение описания флага
+     * @return string Описание флага
+     */
     public function getDescription(): string {
         return $this->description;
     }
 
+    /**
+     * Получение стандартного значения флага
+     * @return bool Стандартное значение флага
+     */
     public function getDefaultValue(): bool {
         return false;
     }
 
-    public function check(Player $player, Region $region): bool {
+    /**
+     * Проверка на доступ к региону с помощью текущего флага
+     * @param Player $player Игрок
+     * @param Region $region Регион
+     * @return bool Есть ли доступ на воздействие на регион
+     */
+    public final function check(Player $player, Region $region): bool {
         return $this->checkForPlayer($player, $region->getFlag($this), $region);
     }
 
-    protected function checkForPlayer(string $playerName, bool $flagValue, Region $region): bool {
-        return $flagValue || $region->getRole($playerName) > Roles::NOBODY;
+    /**
+     * Метод, с помощью которого определяется результат доступа на воздействие на регион
+     * @param Player $player Игрок
+     * @param bool $flagValue Значение флага
+     * @param Region $region Регион
+     * @return bool Есть ли доступ на воздействие на регион
+     */
+    protected function checkForPlayer(Player $player, bool $flagValue, Region $region): bool {
+        return $flagValue || $region->getRole($player->getName()) > Roles::NOBODY;
     }
 }
