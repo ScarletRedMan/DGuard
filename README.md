@@ -32,3 +32,4 @@
 ## Требования для плагина
 - PocketMine с версией API 4.x.x
 - PHP 8.x
+- Плагин FormConstructor (прикреплен к релизу)
