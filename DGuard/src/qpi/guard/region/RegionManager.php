@@ -2,6 +2,7 @@
 
 namespace qpi\guard\region;
 
+use http\Exception\InvalidArgumentException;
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
@@ -17,10 +18,14 @@ class RegionManager {
     private const REGIONS_DIR = "regions/";
     private const SAVED_FREE_ID_PATH = ".free_id";
 
+    public const FIRST_POINT = 0;
+    public const SECOND_POINT = 1;
+
     private PluginBase $plugin;
     private string $path;
     private int $freeId;
     private RegionsList $regions;
+    private array $points = [];
 
     public function init(PluginBase $plugin): RegionManager {
         $this->plugin = $plugin;
@@ -46,7 +51,7 @@ class RegionManager {
     }
 
     public function prepareRegionManagementListener(): RegionManagementListener {
-        return new RegionManagementListener($this->regions);
+        return new RegionManagementListener($this, $this->regions);
     }
 
     private function saveFreeId(): void {
@@ -155,5 +160,34 @@ class RegionManager {
      */
     public function getRegions(Player $player): array {
         return $this->regions->getRegions($player);
+    }
+
+    /**
+     * Ставит маркер-точку для отметки границ региона
+     * @param Player $player Игрок
+     * @param Vector3 $pos Точка
+     * @param int $number Номер точки. Использовать константы FIRST_POINT и SECOND_POINT
+     * @return void
+     */
+    public function placePoint(Player $player, Vector3 $pos, int $number): void {
+        if ($number !== self::FIRST_POINT || $number !== self::SECOND_POINT) throw new InvalidArgumentException();
+
+        $this->points[$player->getId()][$number] = Point::fromVector($pos);
+    }
+
+    /**
+     * Получение территории по выделенным точкам
+     * @param Player $player Игрок
+     * @return Area Выделенная территория
+     * @throws RegionException
+     */
+    public function getSelectedArea(Player $player): Area {
+        if (!isset($this->points[$player->getId()]) || count($this->points) < 2) throw new RegionException("Не выстановлены точки границ территории");
+
+        return new Area($this->points[$player->getId()][self::FIRST_POINT], $this->points[$player->getId()][self::SECOND_POINT]);
+    }
+
+    public function removePoints(Player $player): void {
+        unset($this->points[$player->getId()]);
     }
 }
