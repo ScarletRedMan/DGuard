@@ -100,6 +100,14 @@ class Region implements JsonSerializable {
         return $this->members[$playerName] ?? Roles::NOBODY;
     }
 
+    /**
+     * Получение списка НикНеймов игроков, которые могут взаимодействовать с регионом. Владельца региона там нет.
+     * @return string[] Список игроков
+     */
+    public function getMembers(): array {
+        return array_keys($this->members);
+    }
+
     public function jsonSerialize(): array {
         return [
             'id' => $this->id,
