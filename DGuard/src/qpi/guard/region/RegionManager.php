@@ -154,6 +154,16 @@ class RegionManager {
     }
 
     /**
+     * Проверка на коллизию привата в территории
+     * @param string|World $world Мир или его название
+     * @param Area $area Территория
+     * @return bool Присутствует ли приват данной территории
+     */
+    public function isPrivateArea(string|World $world, Area $area): bool {
+        return $this->regions->isPrivateArea($world, $area);
+    }
+
+    /**
      * Возвращает список регионов, которыми владеет игрок
      * @param Player $player Игрок
      * @return Region[] Список регионов
@@ -176,13 +186,22 @@ class RegionManager {
     }
 
     /**
+     * Проверка наличие отметки точек территории игроком
+     * @param Player $player Игрок
+     * @return bool Результат проверки
+     */
+    public function isSelectedArea(Player $player): bool {
+        return isset($this->points[$player->getId()]) && count($this->points) === 2;
+    }
+
+    /**
      * Получение территории по выделенным точкам
      * @param Player $player Игрок
      * @return Area Выделенная территория
      * @throws RegionException
      */
     public function getSelectedArea(Player $player): Area {
-        if (!isset($this->points[$player->getId()]) || count($this->points) < 2) throw new RegionException("Не выстановлены точки границ территории");
+        if (!$this->isSelectedArea($player)) throw new RegionException("Не выстановлены точки границ территории");
 
         return new Area($this->points[$player->getId()][self::FIRST_POINT], $this->points[$player->getId()][self::SECOND_POINT]);
     }

@@ -5,6 +5,7 @@ namespace qpi\guard\region;
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 use pocketmine\world\World;
+use qpi\guard\utils\Area;
 use qpi\guard\utils\Point;
 
 /**
@@ -80,8 +81,18 @@ class RegionsList {
 
         return $region;
     }
+
     public function removeCache(Player $player): void {
         unset($this->cache[$player->getId()]);
+    }
+
+    public function isPrivateArea(string|World $world, Area $area): bool {
+        $worldName = $world instanceof World? strtolower($world->getFolderName()) : $world;
+
+        foreach ($this->data[$worldName] as $region) {
+            if ($area->isInside($region->getArea())) return true;
+        }
+        return false;
     }
 
     public function getRegions(Player $player): array {
