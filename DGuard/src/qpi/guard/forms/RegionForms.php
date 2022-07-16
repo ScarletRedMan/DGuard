@@ -7,6 +7,7 @@ use http\Exception\InvalidArgumentException;
 use pocketmine\player\Player;
 use pocketmine\utils\SingletonTrait;
 use qpi\guard\forms\defaults\CreateRegionOption;
+use qpi\guard\region\RegionManager;
 
 class RegionForms {
     use SingletonTrait;
@@ -23,7 +24,7 @@ class RegionForms {
         $form->setTitle("Меню");
 
         foreach ($this->options as $option) {
-            if (!$option->canClick($player)) continue;
+            if (!$option->canClick($player, RegionManager::getInstance()->findByPlayer($player))) continue;
 
             $form->addButton($option->getText(),
                 SimpleForm::IMAGE_TYPE_PATH,

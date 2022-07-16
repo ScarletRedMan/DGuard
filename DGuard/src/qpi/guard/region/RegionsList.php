@@ -90,7 +90,7 @@ class RegionsList {
         $worldName = $world instanceof World? strtolower($world->getFolderName()) : $world;
 
         foreach ($this->data[$worldName] as $region) {
-            if ($area->isInside($region->getArea())) return true;
+            if ($area->isCollide($region->getArea())) return true;
         }
         return false;
     }

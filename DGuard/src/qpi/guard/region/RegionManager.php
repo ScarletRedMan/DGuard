@@ -51,7 +51,7 @@ class RegionManager {
     }
 
     public function prepareRegionManagementListener(): RegionManagementListener {
-        return new RegionManagementListener($this, $this->regions);
+        return new RegionManagementListener($this->regions);
     }
 
     private function saveFreeId(): void {
@@ -59,7 +59,7 @@ class RegionManager {
     }
 
     private function useFreeId(): int {
-        $id = $this->freeId;
+        $id = $this->freeId++;
         $this->saveFreeId();
         return $id;
     }
@@ -67,10 +67,13 @@ class RegionManager {
     private function loadRegions(): void {
         $files = scandir($this->path . self::REGIONS_DIR);
         foreach ($files as $file) {
-            if (!is_file($file)) continue;
+            $path = $this->path . self::REGIONS_DIR. $file;
+            if (!is_file($path)) continue;
 
-            $region = Region::fromJson(file_get_contents($file));
+            $region = Region::fromJson(file_get_contents($path));
             $this->regions->add($region);
+
+            if ($this->freeId <= $region->getId()) $this->freeId = $region->getId() + 1;
         }
     }
 
@@ -180,7 +183,7 @@ class RegionManager {
      * @return void
      */
     public function placePoint(Player $player, Vector3 $pos, int $number): void {
-        if ($number !== self::FIRST_POINT || $number !== self::SECOND_POINT) throw new InvalidArgumentException();
+        if ($number !== self::FIRST_POINT && $number !== self::SECOND_POINT) throw new InvalidArgumentException();
 
         $this->points[$player->getId()][$number] = Point::fromVector($pos);
     }
@@ -191,7 +194,7 @@ class RegionManager {
      * @return bool Результат проверки
      */
     public function isSelectedArea(Player $player): bool {
-        return isset($this->points[$player->getId()]) && count($this->points) === 2;
+        return isset($this->points[$player->getId()]) && count($this->points[$player->getId()]) === 2;
     }
 
     /**
