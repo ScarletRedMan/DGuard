@@ -7,6 +7,7 @@ use http\Exception\InvalidArgumentException;
 use pocketmine\player\Player;
 use pocketmine\utils\SingletonTrait;
 use qpi\guard\forms\defaults\CreateRegionOption;
+use qpi\guard\forms\defaults\ViewInfoAboutRegionOption;
 use qpi\guard\region\Region;
 use qpi\guard\region\RegionManager;
 
@@ -69,5 +70,6 @@ class RegionForms {
 
     private function registerDefaultOptions(): void {
         $this->register(new CreateRegionOption(), CreateRegionOption::SECTION_ID);
+        $this->register(new ViewInfoAboutRegionOption(), ViewInfoAboutRegionOption::SECTION_ID);
     }
 }

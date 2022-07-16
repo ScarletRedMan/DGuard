@@ -2,6 +2,7 @@
 
 namespace qpi\guard\region\flag\defaults;
 
+use pocketmine\player\Player;
 use qpi\guard\region\flag\Flag;
 use qpi\guard\region\Region;
 
@@ -11,7 +12,7 @@ class PvpFlag extends Flag {
         parent::__construct(DefaultFlagIds::PVP, "PvP режим", "Разрешает атаковать других игроков в регионе.");
     }
 
-    protected function checkForPlayer(string $playerName, bool $flagValue, Region $region): bool {
+    protected function checkForPlayer(Player $player, bool $flagValue, Region $region): bool {
         return $flagValue;
     }
 }
