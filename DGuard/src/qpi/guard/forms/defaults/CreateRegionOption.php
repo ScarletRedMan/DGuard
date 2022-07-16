@@ -8,11 +8,12 @@ use pocketmine\player\Player;
 use qpi\guard\event\CreatedRegionEvent;
 use qpi\guard\event\CreatingRegionEvent;
 use qpi\guard\forms\MenuOption;
+use qpi\guard\forms\RegionMenuOption;
 use qpi\guard\region\Region;
 use qpi\guard\region\RegionException;
 use qpi\guard\region\RegionManager;
 
-class CreateRegionOption extends MenuOption {
+class CreateRegionOption extends MenuOption implements RegionMenuOption {
 
     public const SECTION_ID = "regionCreate";
 

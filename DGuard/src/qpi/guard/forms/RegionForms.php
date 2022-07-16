@@ -7,10 +7,15 @@ use http\Exception\InvalidArgumentException;
 use pocketmine\player\Player;
 use pocketmine\utils\SingletonTrait;
 use qpi\guard\forms\defaults\CreateRegionOption;
+use qpi\guard\region\Region;
 use qpi\guard\region\RegionManager;
 
 class RegionForms {
     use SingletonTrait;
+
+    public const TYPE_MENU = 0;
+    public const TYPE_CONTROL = 1;
+    public const TYPE_VIEW = 2;
 
     private array $options = [];
     private array $keys = [];
@@ -23,8 +28,24 @@ class RegionForms {
         $form = new SimpleForm();
         $form->setTitle("Меню");
 
+        $this->appendMenuButtons($player, $form, RegionManager::getInstance()->findByPlayer($player), self::TYPE_MENU);
+
+        $form->sendToPlayer($player);
+    }
+
+    public function appendMenuButtons(Player $player, SimpleForm $form, ?Region $region, int $type): void {
+        $class = match ($type) {
+            self::TYPE_MENU => RegionMenuOption::class,
+            self::TYPE_CONTROL => RegionControlOption::class,
+            self::TYPE_VIEW => RegionViewOption::class,
+            default => null
+        };
+        if ($class === null) return;
+
         foreach ($this->options as $option) {
-            if (!$option->canClick($player, RegionManager::getInstance()->findByPlayer($player))) continue;
+            if (!is_subclass_of($option, $class)) continue;
+
+            if (!$option->canClick($player, $region)) continue;
 
             $form->addButton($option->getText(),
                 SimpleForm::IMAGE_TYPE_PATH,
@@ -33,8 +54,6 @@ class RegionForms {
                     $option->click($player);
                 });
         }
-
-        $form->sendToPlayer($player);
     }
 
     public function register(MenuOption $obj, ?string $key = null): void {
