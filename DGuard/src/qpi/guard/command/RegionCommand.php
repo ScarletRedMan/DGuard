@@ -31,15 +31,20 @@ class RegionCommand extends Command {
 
         $firstArg = $args[0];
 
+        $regionManager = RegionManager::getInstance();
         switch ($firstArg) {
             case "pos1":
-                RegionManager::getInstance()->placePoint($sender, $sender->getPosition(), RegionManager::FIRST_POINT);
-                $sender->sendMessage("§eПервая точка была успешно установлена!");
+                if ($regionManager->findByPlayer($sender) === null) {
+                    RegionManager::getInstance()->placePoint($sender, $sender->getPosition(), RegionManager::FIRST_POINT);
+                    $sender->sendMessage("§eПервая точка была успешно установлена!");
+                } else $sender->sendMessage("§cДанная точка находится в чужом привате.");
                 break;
 
             case "pos2":
-                RegionManager::getInstance()->placePoint($sender, $sender->getPosition(), RegionManager::SECOND_POINT);
-                $sender->sendMessage("§eВторая точка была успешно установлена!");
+                if ($regionManager->findByPlayer($sender) === null) {
+                    RegionManager::getInstance()->placePoint($sender, $sender->getPosition(), RegionManager::SECOND_POINT);
+                    $sender->sendMessage("§eВторая точка была успешно установлена!");
+                } else $sender->sendMessage("§cДанная точка находится в чужом привате.");
                 break;
         }
         return true;
