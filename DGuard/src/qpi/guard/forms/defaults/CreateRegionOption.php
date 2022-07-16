@@ -80,6 +80,7 @@ class CreateRegionOption extends MenuOption {
             }
 
             $rg = $regionManager->createNewRegion($player->getName(), $player->getWorld()->getFolderName(), $area, $name);
+            $player->sendMessage("§eРегион '{$name}' был успешно создан!");
 
             $event = new CreatedRegionEvent($player, $rg);
             $event->call();
