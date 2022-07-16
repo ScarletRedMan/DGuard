@@ -5,11 +5,16 @@ namespace qpi\guard\forms\defaults;
 use form\CustomForm;
 use form\SimpleForm;
 use pocketmine\player\Player;
+use qpi\guard\event\CreatedRegionEvent;
+use qpi\guard\event\CreatingRegionEvent;
 use qpi\guard\forms\MenuOption;
+use qpi\guard\region\Region;
 use qpi\guard\region\RegionException;
 use qpi\guard\region\RegionManager;
 
 class CreateRegionOption extends MenuOption {
+
+    public const SECTION_ID = "regionCreate";
 
     public function __construct() {
         parent::__construct("Создание региона", "textures/items/campfire");
@@ -58,9 +63,26 @@ class CreateRegionOption extends MenuOption {
                 return;
             }
 
-            //TODO: RegionCreationEvent
+            $rg = Region::fromJson([ //TODO: Убрать этот костыль
+                'id' => -1,
+                'world' => $player->getWorld()->getFolderName(),
+                'name' => $name,
+                'owner' => $player->getName(),
+                'members' => [],
+                'flags' => [],
+                'area' => $area->jsonSerialize(),
+            ]);
+            $event = new CreatingRegionEvent($player, $rg);
+            $event->call();
+            if ($event->isCancelled()) {
+                $player->sendMessage("§c{$event->getReason()}");
+                return;
+            }
 
-            $regionManager->createNewRegion($player->getName(), $player->getWorld()->getFolderName(), $area, $name);
+            $rg = $regionManager->createNewRegion($player->getName(), $player->getWorld()->getFolderName(), $area, $name);
+
+            $event = new CreatedRegionEvent($player, $rg);
+            $event->call();
         });
         $form->setTitle("Создание региона");
 

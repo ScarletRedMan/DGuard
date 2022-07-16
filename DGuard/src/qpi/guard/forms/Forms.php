@@ -6,6 +6,7 @@ use form\SimpleForm;
 use http\Exception\InvalidArgumentException;
 use pocketmine\player\Player;
 use pocketmine\utils\SingletonTrait;
+use qpi\guard\forms\defaults\CreateRegionOption;
 
 class Forms {
     use SingletonTrait;
@@ -17,7 +18,7 @@ class Forms {
         $this->registerDefaultOptions();
     }
 
-    public function sendMainForm(Player $player) {
+    public function sendMainForm(Player $player): void {
         $form = new SimpleForm();
         $form->setTitle("Меню");
 
@@ -35,7 +36,7 @@ class Forms {
         $form->sendToPlayer($player);
     }
 
-    public function register(MenuOption $obj, ?string $key = null) {
+    public function register(MenuOption $obj, ?string $key = null): void {
         $this->options[] = $obj;
         $this->keys[$key] = array_key_last($this->options);
     }
@@ -47,6 +48,6 @@ class Forms {
     }
 
     private function registerDefaultOptions(): void {
-
+        $this->register(new CreateRegionOption(), CreateRegionOption::SECTION_ID);
     }
 }
