@@ -8,7 +8,7 @@ use pocketmine\player\Player;
 use pocketmine\utils\SingletonTrait;
 use qpi\guard\forms\defaults\CreateRegionOption;
 
-class Forms {
+class RegionForms {
     use SingletonTrait;
 
     private array $options = [];

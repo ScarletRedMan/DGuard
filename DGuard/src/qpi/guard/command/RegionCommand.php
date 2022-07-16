@@ -5,17 +5,17 @@ namespace qpi\guard\command;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
-use qpi\guard\forms\Forms;
+use qpi\guard\forms\RegionForms;
 use qpi\guard\region\RegionManager;
 
 class RegionCommand extends Command {
 
-    private Forms $forms;
+    private RegionForms $forms;
 
     public function __construct() {
         parent::__construct("rg", "Управление регионами", "/rg", ['region', 'dguard']);
 
-        $this->forms = Forms::getInstance();
+        $this->forms = RegionForms::getInstance();
     }
 
     public function execute(CommandSender $sender, string $commandLabel, array $args) {
